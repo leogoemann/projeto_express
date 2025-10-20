@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/pacientes.css">
+  <title>Pacientes</title>
+</head>
+<body>
+  <h1>Pacientes</h1>
+  <a href="/pacientes/novo">Adicionar Paciente</a>
+  <a href="/painel">Retornar</a>
+
+  <table>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Telefone</th>
+      <th>Nascimento</th>
+      <th>Ações</th>
+    </tr>
+
+    <% if (pacientes && pacientes.length > 0) { %>
+      <% pacientes.forEach(function(p) { %>
+        <tr>
+          <td><%= p.nome || p.Nome || '' %></td>
+          <td><%= p.cpf || p.CPF || '' %></td>
+          <td><%= p.telefone || p.Telefone || '' %></td>
+          <td><%= p.nascimento || p.Data_nascimento %></td>
+          <td>
+            <a href="#" class="edit-btn" 
+               data-id="<%= p.id || p.Id || '' %>"
+               data-nome="<%= (p.nome || p.Nome || '') %>"
+               data-cpf="<%= (p.cpf || p.CPF || '') %>"
+               data-data_nascimento="<%= (p.data_nascimento || p.DataNascimento || p.dataNascimento || '') %>"
+               data-telefone="<%= (p.telefone || p.Telefone || '') %>"
+               data-email="<%= (p.email || p.Email || '') %>">Editar</a>
+            <a href="/pacientes/remover/<%= p.id || p.Id || '' %>" class="remove-btn">Remover</a>
+          </td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr>
+        <td colspan="4">Nenhum paciente encontrado.</td>
+      </tr>
+    <% } %>
+
+  </table>
+
+  <!-- Modal de edição -->
+  <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <h2>Editar Paciente</h2>
+      <form id="editForm" method="POST" action="">
+        <label>Nome<br>
+          <input type="text" name="nome" id="modal-nome" required>
+        </label>
+        <label>CPF<br>
+          <input type="text" name="cpf" id="modal-cpf" required>
+        </label>
+        <label>Data de nascimento<br>
+          <input type="date" name="data_nascimento" id="modal-data_nascimento" required>
+        </label>
+        <label>Telefone<br>
+          <input type="text" name="telefone" id="modal-telefone">
+        </label>
+        <label>Email<br>
+          <input type="email" name="email" id="modal-email">
+        </label>
+
+        <div class="modal-actions">
+          <button type="button" id="modal-cancel" class="btn">Cancelar</button>
+          <button type="submit" class="btn primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      function qs(sel, ctx){ return (ctx||document).querySelector(sel); }
+      function qsa(sel, ctx){ return Array.from((ctx||document).querySelectorAll(sel)); }
+
+      var modal = qs('#editModal');
+      var form = qs('#editForm');
+      var cancel = qs('#modal-cancel');
+
+      qsa('.edit-btn').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          var id = btn.dataset.id || '';
+          var nome = btn.dataset.nome || '';
+          var cpf = btn.dataset.cpf || '';
+          var data_nascimento = btn.dataset.data_nascimento || '';
+          var telefone = btn.dataset.telefone || '';
+          var email = btn.dataset.email || '';
+
+          // preencher o formulário do modal
+          qs('#modal-nome').value = nome;
+          qs('#modal-cpf').value = cpf;
+          // normalizar data para YYYY-MM-DD se possível
+          if (data_nascimento) {
+            try {
+              var d = new Date(data_nascimento);
+              if (!isNaN(d)) qs('#modal-data_nascimento').value = d.toISOString().split('T')[0];
+              else qs('#modal-data_nascimento').value = data_nascimento;
+            } catch (err) { qs('#modal-data_nascimento').value = data_nascimento; }
+          } else { qs('#modal-data_nascimento').value = ''; }
+          qs('#modal-telefone').value = telefone;
+          qs('#modal-email').value = email;
+
+          // ajustar ação do form
+          form.action = '/pacientes/editar/' + encodeURIComponent(id);
+
+          // mostrar modal (usar flex para centralizar)
+          modal.style.display = 'flex';
+          modal.setAttribute('aria-hidden','false');
+        });
+      });
+
+      function closeModal(){
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden','true');
+      }
+
+      cancel.addEventListener('click', function(){ closeModal(); });
+      qs('.modal-overlay').addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+    })();
+  </script>
+
+</body>
+</html>

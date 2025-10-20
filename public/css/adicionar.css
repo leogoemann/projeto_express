@@ -1,0 +1,36 @@
+/* estilos para adicionar.ejs */
+body{ 
+    font-family: Arial, sans-serif;
+    background:var(--bg); 
+    padding:1.5rem 
+}
+
+form{ 
+    max-width:520px; 
+    margin:0 auto; 
+    background:var(--panel); 
+    padding:1rem; border-radius:8px; 
+    box-shadow:0 6px 18px rgba(0,0,0,0.06)
+}
+
+input{ 
+    width:500px; 
+    padding:.6rem; 
+    margin:.5rem 0; 
+    border:1px solid #e3e7ee; 
+    border-radius:6px 
+}
+    
+button{ 
+    background:var(--primary);
+    color:#fff;
+    padding:.6rem 1rem;
+    border:none;
+    border-radius:6px 
+}
+
+h1{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}

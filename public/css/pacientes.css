@@ -1,0 +1,118 @@
+/* Layout geral */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: var(--bg);
+    color: #222;
+    margin: 0;
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin: 0 0 1rem 0;
+    font-size: 1.6rem;
+}
+
+/* Botão "Adicionar Paciente" */
+a[href="/pacientes/novo"] {
+    display: inline-block;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 0.9rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a[href="/painel"]{
+    display: inline-block;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 0.9rem;
+    background-color: var(--primary);
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Tabela responsiva */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--panel);
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(20,30,50,0.06);
+    padding: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 0.75rem 0.9rem;
+    text-align: left;
+    border-bottom: 1px solid #e9edf3;
+    vertical-align: middle;
+}
+
+th {
+    background: linear-gradient(180deg,#fafbfc,#f0f3f7);
+    font-weight: 700;
+    color: #334155;
+}
+
+tr:nth-child(even) td { background: #fbfdff; }
+
+/* Ações (links) */
+td a {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+/* Target por rota nas hrefs atuais */
+a[href^="/pacientes/editar"] { background: var(--accent); }
+a[href^="/pacientes/remover"] { background: var(--danger); }
+
+/* Mensagem de tabela vazia */
+td[colspan] {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem;
+}
+
+/* Pequenas melhorias responsivas */
+@media (max-width: 640px) {
+    h1 { font-size: 1.25rem; }
+    th, td { padding: 0.6rem 0.5rem; }
+    a[href="/pacientes/novo"] { padding: 0.45rem 0.7rem; }
+}
+
+/* Botões padrão */
+.btn { padding: 0.45rem 0.75rem; border-radius: 6px; border: none; cursor: pointer; }
+.btn.primary { background: var(--primary); color: #fff; }
+
+/* Modal */
+.modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1200; }
+.modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+.modal-box { position: relative; background: var(--panel); padding: 1.25rem; border-radius: 8px; box-shadow: 0 10px 40px rgba(2,6,23,0.2); width: 100%; max-width: 520px; z-index: 2; }
+.modal-box h2 { margin-top: 0; }
+.modal-box label { display: block; margin: 0.5rem 0; font-size: 0.95rem; }
+.modal-box input { width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #e6e9ee; box-sizing: border-box; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+
+/* Edit/Remove link styles */
+.edit-btn { background: #06b6d4; color: #fff; padding: 0.35rem 0.6rem; border-radius: 6px; text-decoration: none; }
+.remove-btn { background: #ef4444; color: #fff; padding: 0.35rem 0.6rem; border-radius: 6px; text-decoration: none; }

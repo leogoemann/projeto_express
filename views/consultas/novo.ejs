@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/consultas.css">
+  <title>Nova Consulta</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Nova Consulta</h1>
+    <form action="/consultas/novo" method="POST">
+      <label>Paciente ID<br>
+        <input name="paciente_id" required>
+      </label>
+      <label>Médico ID<br>
+        <input name="medico_id" required>
+      </label>
+      <label>Data da consulta<br>
+        <input name="data_consulta" type="date" required>
+      </label>
+      <label>Observações<br>
+        <input name="observacoes">
+      </label>
+      <label>Status<br>
+        <input name="status">
+      </label>
+      <div style="margin-top:1rem">
+        <button class="btn primary" type="submit">Salvar</button>
+        <a class="btn ghost" href="/consultas">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

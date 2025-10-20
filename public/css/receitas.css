@@ -1,0 +1,4 @@
+/* estilos para receitas */
+body{ font-family: Arial, sans-serif; padding:1rem; background:var(--bg) }
+table{ width:100%; border-collapse:collapse; background:var(--panel) }
+th,td{ padding:.6rem }

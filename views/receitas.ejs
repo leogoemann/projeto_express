@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/receitas.css">
+    <title>Receitas</title>
+</head>
+<body>
+    <h1>Receitas</h1>
+    <table>
+        <tr>
+        <th>Consulta_id</th>
+        <th>Descrição</th>
+        <th>Data_emissão</th>
+                <th>A75es</th>
+        </tr>
+                <% receitas.forEach(function(r) { %>
+                <tr>
+                        <td><%= r.consulta_id || r.Consulta_id || '' %></td>
+                        <td><%= r.descricao || r.Descricao || '' %></td>
+                        <td><%= r.data_emissao || r.Data_emissao || '' %></td>
+                        <td>
+                                <a href="#" class="edit-btn"
+                                     data-id="<%= r.id || r.Id || '' %>"
+                                     data-consulta_id="<%= r.consulta_id || r.Consulta_id || '' %>"
+                                     data-descricao="<%= (r.descricao || r.Descricao || '') %>"
+                                     data-data_emissao="<%= (r.data_emissao || r.Data_emissao || '') %>">Editar</a>
+                                <a href="/receitas/remover/<%= r.id || r.Id || '' %>" class="remove-btn">Remover</a>
+                        </td>
+                </tr>
+                <% }) %>
+    </table>
+
+        <!-- Modal de edição para receitas -->
+        <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-box">
+                <h2>Editar Receita</h2>
+                <form id="editForm" method="POST" action="">
+                    <label>Consulta ID<br>
+                        <input type="text" name="consulta_id" id="modal-consulta_id" required>
+                    </label>
+                    <label>Descrição<br>
+                        <input type="text" name="descricao" id="modal-descricao">
+                    </label>
+                    <label>Data emissão<br>
+                        <input type="date" name="data_emissao" id="modal-data_emissao">
+                    </label>
+                    <div class="modal-actions">
+                        <button type="button" id="modal-cancel" class="btn">Cancelar</button>
+                        <button type="submit" class="btn primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            (function(){
+                function qs(sel, ctx){ return (ctx||document).querySelector(sel); }
+                function qsa(sel, ctx){ return Array.from((ctx||document).querySelectorAll(sel)); }
+
+                var modal = qs('#editModal');
+                var form = qs('#editForm');
+                var cancel = qs('#modal-cancel');
+
+                qsa('.edit-btn').forEach(function(btn){
+                    btn.addEventListener('click', function(e){
+                        e.preventDefault();
+                        var id = btn.dataset.id || '';
+                        qs('#modal-consulta_id').value = btn.dataset.consulta_id || '';
+                        qs('#modal-descricao').value = btn.dataset.descricao || '';
+                        var d = btn.dataset.data_emissao || '';
+                        if(d){ try{ var x = new Date(d); if(!isNaN(x)) qs('#modal-data_emissao').value = x.toISOString().split('T')[0]; else qs('#modal-data_emissao').value = d; }catch(e){ qs('#modal-data_emissao').value = d } }
+                        form.action = '/receitas/editar/' + encodeURIComponent(id);
+                        modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false');
+                    });
+                });
+
+                function closeModal(){ modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+                cancel.addEventListener('click', closeModal);
+                qs('.modal-overlay').addEventListener('click', closeModal);
+                document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+                qsa('.remove-btn').forEach(function(link){ link.addEventListener('click', function(e){ if(!confirm('Tem certeza que deseja remover esta receita?')) e.preventDefault(); }) });
+            })();
+        </script>
+</body>
+</html>

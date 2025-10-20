@@ -1,0 +1,5 @@
+/* estilos para painel */
+body{ font-family: Arial, sans-serif; padding:1rem; background:var(--bg) }
+ul{ list-style:none; padding:0 }
+li{ margin:.5rem 0 }
+a{ color:var(--primary); text-decoration:none }
