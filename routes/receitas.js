@@ -4,20 +4,55 @@ const db = require('../db');
 
 // Listar receitas
 router.get('/', (req, res) => {
-  db.query(`
-    SELECT receitas.*, pacientes.nome AS paciente
-    FROM receitas
-    JOIN consultas ON receitas.consulta_id = consultas.id
-    JOIN pacientes ON consultas.paciente_id = pacientes.id
-  `, (err, results) => {
-    if (err) throw err;
+  const query = `
+    SELECT 
+      r.id,
+      r.consulta_id,
+      r.descricao,
+      r.data_emissao,
+      p.nome as paciente,
+      m.nome as medico,
+      DATE_FORMAT(c.data_consulta, '%d/%m/%Y %H:%i') as data_consulta
+    FROM receitas r
+    JOIN consultas c ON r.consulta_id = c.id
+    JOIN pacientes p ON c.paciente_id = p.id
+    JOIN medicos m ON c.medico_id = m.id
+    ORDER BY r.data_emissao DESC
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar receitas:', err);
+      res.status(500).send('Erro ao buscar receitas');
+      return;
+    }
     res.render('receitas', { receitas: results });
   });
 });
 
 // Formulário de nova receita
 router.get('/novo', (req, res) => {
-  res.render('receitas/novo');
+  // Buscar consultas disponíveis com informações do paciente e médico
+  const query = `
+    SELECT 
+      c.id,
+      p.nome as paciente,
+      m.nome as medico,
+      DATE_FORMAT(c.data_consulta, '%d/%m/%Y %H:%i') as data_consulta
+    FROM consultas c
+    JOIN pacientes p ON c.paciente_id = p.id
+    JOIN medicos m ON c.medico_id = m.id
+    ORDER BY c.data_consulta DESC
+  `;
+
+  db.query(query, (err, consultas) => {
+    if (err) {
+      console.error('Erro ao buscar consultas:', err);
+      res.status(500).send('Erro ao carregar formulário');
+      return;
+    }
+    res.render('receitas/novo', { consultas });
+  });
 });
 
 // Adicionar receita

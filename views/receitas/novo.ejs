@@ -4,23 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/receitas.css">
+  <link rel="stylesheet" href="/css/adicionar.css">
   <title>Nova Receita</title>
 </head>
 <body>
   <div class="container">
     <h1>Nova Receita</h1>
     <form action="/receitas/novo" method="POST">
-      <label>Consulta ID<br>
-        <input name="consulta_id" required>
-      </label>
-      <label>Descrição<br>
-        <input name="descricao">
-      </label>
-      <label>Data de emissão<br>
-        <input name="data_emissao" type="date">
-      </label>
-      <div style="margin-top:1rem">
+      <div class="form-group">
+        <label for="consulta_id">Consulta<br>
+          <select name="consulta_id" id="consulta_id" required>
+            <option value="">Selecione uma consulta</option>
+            <% consultas.forEach(function(consulta) { %>
+              <option value="<%= consulta.id %>">
+                Paciente: <%= consulta.paciente %> - 
+                Médico: <%= consulta.medico %> - 
+                Data: <%= consulta.data_consulta %>
+              </option>
+            <% }); %>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="descricao">Descrição da Receita<br>
+          <textarea name="descricao" id="descricao" rows="4" required></textarea>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="data_emissao">Data de Emissão<br>
+          <input type="date" name="data_emissao" id="data_emissao" 
+                 value="<%= new Date().toISOString().split('T')[0] %>" required>
+        </label>
+      </div>
+
+      <div class="form-actions" style="margin-top:1rem">
         <button class="btn primary" type="submit">Salvar</button>
         <a class="btn ghost" href="/receitas">Cancelar</a>
       </div>

@@ -1,129 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/consultas.css">
-    <title>Médicos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/consultas.css">
+  <title>Consultas</title>
 </head>
 <body>
-    <h1>Consultas</h1>
-    <a href="/consultass/novo">Cadastrar médico</a>
-    <a href="/painel">Retornar</a>
-    <table>
-        <tr>
-        <th>Nome</th>
-        <th>CRM</th>
-        <th>Especialidade</th>
-        <th>Telefone</th>
-        <th>Email</th>
-        <th>Ações</th>
-        </tr>
-        <% consultas.forEach(consultas => { %>
-        <tr>
-            <td><%= consultas.Nome %></td>
-            <td><%= consultas.CRM %></td>
-            <td><%= consultas.Especialidade %></td>
-            <td><%= consultas.Telefone %></td>
-            <td><%= consultas.Email %></td>
-            <td>
-                <a href="#" class="edit-btn"
-                   data-id="<%= consultas.id || consultas.Id || '' %>"
-                   data-paciente_id="<%= consultas.Paciente_id %>"
-                   data-medico_id="<%= consultas.Medico_id %>"
-                   data-data_consulta="<%= consultas.Data_consulta %>"
-                   data-especialidade="<%= consultas.Especialidade %>"
-                   data-telefone="<%= consultas.Telefone %>"
-                   data-email="<%= consultas.Email %>">Editar</a>
-                <a href="/consultass/remover/<%= consultas.id || consultas.Id || '' %>" class="remove-btn">Remover</a>
-            </td>
-        </tr>
-        <% }) %>
-    </table>
-    
-        <!-- Modal de edição (mesmo comportamento do pacientes) -->
-        <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
-            <div class="modal-overlay"></div>
-            <div class="modal-box">
-                <h2>Editar Médico</h2>
-                <form id="editForm" method="POST" action="">
-                    <label>Nome<br>
-                        <input type="text" name="nome" id="modal-nome" required>
-                    </label>
-                    <label>CRM<br>
-                        <input type="text" name="crm" id="modal-crm" required>
-                    </label>
-                    <label>Especialidade<br>
-                        <input type="text" name="especialidade" id="modal-especialidade">
-                    </label>
-                    <label>Telefone<br>
-                        <input type="text" name="telefone" id="modal-telefone">
-                    </label>
-                    <label>Email<br>
-                        <input type="email" name="email" id="modal-email">
-                    </label>
+  <h1>Consultas</h1>
+  <div class="actions">
+    <a href="/consultas/novo" class="btn primary">Adicionar Consulta</a>
+    <a href="/painel" class="btn">Retornar</a>
+  </div>
 
-                    <div class="modal-actions">
-                        <button type="button" id="modal-cancel" class="btn">Cancelar</button>
-                        <button type="submit" class="btn primary">Salvar</button>
-                    </div>
-                </form>
-            </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Data da Consulta</th>
+        <th>Observações</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (consultas && consultas.length > 0) { %>
+        <% consultas.forEach(function(consulta) { %>
+          <tr>
+            <td><%= consulta.paciente || 'Não informado' %></td>
+            <td><%= consulta.medico || 'Não informado' %></td>
+            <td><%= consulta.data_consulta ? new Date(consulta.data_consulta).toLocaleString('pt-BR') : 'Não informada' %></td>
+            <td><%= consulta.observacoes || '-' %></td>
+            <td><%= consulta.status || '-' %></td>
+            <td class="actions">
+              <a href="#" class="btn edit-btn"
+                data-id="<%= consulta.id %>"
+                data-paciente-id="<%= consulta.paciente_id %>"
+                data-medico-id="<%= consulta.medico_id %>"
+                data-data-consulta="<%= consulta.data_consulta %>"
+                data-observacoes="<%= consulta.observacoes %>"
+                data-status="<%= consulta.status %>">
+                Editar
+              </a>
+              <a href="/consultas/remover/<%= consulta.id %>" class="remove-btn">Remover</a>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="6" class="no-data">Nenhuma consulta encontrada.</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <!-- Modal de edição -->
+  <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <h2>Editar Consulta</h2>
+      <form id="editForm" method="POST">
+        <div class="form-group">
+          <label for="modal-paciente-id">ID do Paciente</label>
+          <input type="text" id="modal-paciente-id" name="paciente_id" required>
         </div>
 
-        <script>
-            (function(){
-                function qs(sel, ctx){ return (ctx||document).querySelector(sel); }
-                function qsa(sel, ctx){ return Array.from((ctx||document).querySelectorAll(sel)); }
+        <div class="form-group">
+          <label for="modal-medico-id">ID do Médico</label>
+          <input type="text" id="modal-medico-id" name="medico_id" required>
+        </div>
 
-                var modal = qs('#editModal');
-                var form = qs('#editForm');
-                var cancel = qs('#modal-cancel');
+        <div class="form-group">
+          <label for="modal-data-consulta">Data da Consulta</label>
+          <input type="datetime-local" id="modal-data-consulta" name="data_consulta" required>
+        </div>
 
-                qsa('.edit-btn').forEach(function(btn){
-                    btn.addEventListener('click', function(e){
-                        e.preventDefault();
-                        var id = btn.dataset.id || '';
-                        var nome = btn.dataset.nome || '';
-                        var crm = btn.dataset.crm || '';
-                        var especialidade = btn.dataset.especialidade || '';
-                        var telefone = btn.dataset.telefone || '';
-                        var email = btn.dataset.email || '';
+        <div class="form-group">
+          <label for="modal-observacoes">Observações</label>
+          <textarea id="modal-observacoes" name="observacoes"></textarea>
+        </div>
 
-                        // preencher o formulário do modal
-                        qs('#modal-nome').value = nome;
-                        qs('#modal-crm').value = crm;
-                        qs('#modal-especialidade').value = especialidade;
-                        qs('#modal-telefone').value = telefone;
-                        qs('#modal-email').value = email;
+        <div class="form-group">
+          <label for="modal-status">Status</label>
+          <input type="text" id="modal-status" name="status">
+        </div>
 
-                        // ajustar ação do form
-                        form.action = '/consultass/editar/' + encodeURIComponent(id);
+        <div class="modal-actions">
+          <button type="button" id="modal-cancel" class="btn">Cancelar</button>
+          <button type="submit" class="btn primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-                        // mostrar modal (usar flex para centralizar)
-                        modal.style.display = 'flex';
-                        modal.setAttribute('aria-hidden','false');
-                    });
-                });
+  <script>
+    (function() {
+      // Funções auxiliares
+      function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
+      function qsa(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
 
-                function closeModal(){
-                    modal.style.display = 'none';
-                    modal.setAttribute('aria-hidden','true');
-                }
+      // Elementos do modal
+      const modal = qs('#editModal');
+      const form = qs('#editForm');
+      const cancel = qs('#modal-cancel');
 
-                cancel.addEventListener('click', function(){ closeModal(); });
-                qs('.modal-overlay').addEventListener('click', closeModal);
-                document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+      // Manipulação do modal
+      function closeModal() {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      }
 
-                // confirmação de remoção
-                qsa('.remove-btn').forEach(function(link){
-                    link.addEventListener('click', function(e){
-                        var ok = confirm('Tem certeza que deseja remover este médico?');
-                        if(!ok) e.preventDefault();
-                    });
-                });
-            })();
-        </script>
+      function openModal() {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      // Event listeners para botões de edição
+      qsa('.edit-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Extrair dados do botão
+          const id = btn.dataset.id;
+          const pacienteId = btn.dataset.pacienteId;
+          const medicoId = btn.dataset.medicoId;
+          const dataConsulta = btn.dataset.dataConsulta;
+          const observacoes = btn.dataset.observacoes;
+          const status = btn.dataset.status;
+
+          // Preencher formulário
+          qs('#modal-paciente-id').value = pacienteId || '';
+          qs('#modal-medico-id').value = medicoId || '';
+          
+          // Formatar data
+          if (dataConsulta) {
+            try {
+              qs('#modal-data-consulta').value = dataConsulta.slice(0, 16);
+            } catch (err) {
+              console.error('Erro ao formatar data:', err);
+            }
+          }
+
+          qs('#modal-observacoes').value = observacoes || '';
+          qs('#modal-status').value = status || '';
+
+          // Configurar formulário
+          form.action = '/consultas/editar/' + encodeURIComponent(id);
+
+          // Abrir modal
+          openModal();
+        });
+      });
+
+      // Event listeners para fechar o modal
+      cancel.addEventListener('click', closeModal);
+      qs('.modal-overlay').addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+      });
+    })();
+  </script>
+</body>
+    <script>
+          qs('#modal-Paciente_id').value = Paciente_id;
+          qs('#modal-Medico_id').value = Medico_id;
+          // normalizar data consultasara YYYY-MM-DD se consultasossível
+          if (Observacoes) {
+            try {
+              var d = new Date(Observacoes);
+              if (!isNaN(d)) qs('#modal-Observacoes').value = d.toISOString().sconsultaslit('T')[0];
+              else qs('#modal-Observacoes').value = Observacoes;
+            } catch (err) { qs('#modal-Observacoes').value = Observacoes; }
+          } else { qs('#modal-Observacoes').value = ''; }
+          qs('#modal-Data_consulta').value = Data_consulta;
+          qs('#modal-email').value = email;
+
+          // ajustar ação do form
+          form.action = '/consultas/editar/' + encodeURIComconsultasonent(id);
+
+          // mostrar modal (usar flex consultasara centralizar)
+          modal.style.disconsultaslay = 'flex';
+          modal.setAttribute('aria-hidden','false');
+
+      function closeModal(){
+        modal.style.disconsultaslay = 'none';
+        modal.setAttribute('aria-hidden','true');
+      }
+
+      cancel.addEventListener('click', function(){ closeModal(); });
+      qs('.modal-overlay').addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escaconsultase') closeModal(); });
+  </script>
+
 </body>
 </html>

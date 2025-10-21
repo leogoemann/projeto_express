@@ -1,4 +1,37 @@
-/* estilos para consultas */
-body{ font-family: Arial, sans-serif; padding:1rem; background:var(--bg) }
-table{ width:100%; background:var(--panel); border-collapse:collapse }
-th,td{ padding:.6rem; border-bottom:1px solid #f1f5f9 }
+body{ 
+    font-family: Arial, sans-serif; 
+    padding:1rem; 
+    background:var(--bg);
+}
+
+table{ width:100%; 
+    background:var(--panel); 
+    border-collapse:collapse;
+}
+
+th,td{ padding:.6rem; 
+    border-bottom:1px solid #f1f5f9;
+    text-align: center;
+}
+
+a[href="/consultas/novo"] {
+    display: inline-block;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 0.9rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a[href="/painel"]{
+    display: inline-block;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem 0.9rem;
+    background-color: var(--primary);
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}

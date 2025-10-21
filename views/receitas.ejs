@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,44 +9,64 @@
 </head>
 <body>
     <h1>Receitas</h1>
-    <table>
-        <tr>
-        <th>Consulta_id</th>
-        <th>Descrição</th>
-        <th>Data_emissão</th>
-                <th>A75es</th>
-        </tr>
-                <% receitas.forEach(function(r) { %>
-                <tr>
-                        <td><%= r.consulta_id || r.Consulta_id || '' %></td>
-                        <td><%= r.descricao || r.Descricao || '' %></td>
-                        <td><%= r.data_emissao || r.Data_emissao || '' %></td>
-                        <td>
-                                <a href="#" class="edit-btn"
-                                     data-id="<%= r.id || r.Id || '' %>"
-                                     data-consulta_id="<%= r.consulta_id || r.Consulta_id || '' %>"
-                                     data-descricao="<%= (r.descricao || r.Descricao || '') %>"
-                                     data-data_emissao="<%= (r.data_emissao || r.Data_emissao || '') %>">Editar</a>
-                                <a href="/receitas/remover/<%= r.id || r.Id || '' %>" class="remove-btn">Remover</a>
-                        </td>
-                </tr>
-                <% }) %>
-    </table>
+    <div class="actions">
+        <a href="/receitas/novo" class="btn primary">Nova Receita</a>
+        <a href="/painel" class="btn">Retornar</a>
+    </div>
 
-        <!-- Modal de edição para receitas -->
+    <table>
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Médico</th>
+                <th>Data da Consulta</th>
+                <th>Descrição</th>
+                <th>Data de Emissão</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (receitas && receitas.length > 0) { %>
+                <% receitas.forEach(function(receita) { %>
+                    <tr>
+                        <td><%= receita.paciente %></td>
+                        <td><%= receita.medico %></td>
+                        <td><%= receita.data_consulta %></td>
+                        <td><%= receita.descricao || '-' %></td>
+                        <td><%= new Date(receita.data_emissao).toLocaleDateString('pt-BR') %></td>
+                        <td class="actions">
+                            <a href="#" class="btn edit-btn"
+                               data-id="<%= receita.id %>"
+                               data-consulta-id="<%= receita.consulta_id %>"
+                               data-descricao="<%= receita.descricao %>"
+                               data-data-emissao="<%= receita.data_emissao %>">
+                                Editar
+                            </a>
+                            <a href="/receitas/remover/<%= receita.id %>" class="remove-btn">Remover</a>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6" class="no-data">Nenhuma receita encontrada.</td>
+                </tr>
+            <% } %>
+    </table>
+    
+        <!-- Modal de edição (mesmo comportamento do pacientes) -->
         <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
             <div class="modal-overlay"></div>
             <div class="modal-box">
-                <h2>Editar Receita</h2>
+                <h2>Editar Médico</h2>
                 <form id="editForm" method="POST" action="">
-                    <label>Consulta ID<br>
-                        <input type="text" name="consulta_id" id="modal-consulta_id" required>
+                    <label>Id_consulta<br>
+                        <input type="text" name="ID consulta" id="modal-idconsulta" required>
                     </label>
-                    <label>Descrição<br>
-                        <input type="text" name="descricao" id="modal-descricao">
+                    <label>Descricao<br>
+                        <input type="text" name="Descrição" id="modal-descricao" required>
                     </label>
-                    <label>Data emissão<br>
-                        <input type="date" name="data_emissao" id="modal-data_emissao">
+                    <label>Data_emissao<br>
+                        <input type="text" name="Data_emissao" id="modal-dataemissao">
                     </label>
                     <div class="modal-actions">
                         <button type="button" id="modal-cancel" class="btn">Cancelar</button>
@@ -69,21 +89,40 @@
                     btn.addEventListener('click', function(e){
                         e.preventDefault();
                         var id = btn.dataset.id || '';
-                        qs('#modal-consulta_id').value = btn.dataset.consulta_id || '';
-                        qs('#modal-descricao').value = btn.dataset.descricao || '';
-                        var d = btn.dataset.data_emissao || '';
-                        if(d){ try{ var x = new Date(d); if(!isNaN(x)) qs('#modal-data_emissao').value = x.toISOString().split('T')[0]; else qs('#modal-data_emissao').value = d; }catch(e){ qs('#modal-data_emissao').value = d } }
-                        form.action = '/receitas/editar/' + encodeURIComponent(id);
-                        modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false');
+                        var Id_consulta = btn.dataset.Id_consulta || '';
+                        var Descricao = btn.dataset.Descricao || '';
+                        var Data_emissao = btn.dataset.Data_emissao || '';
+
+                        // preencher o formulário do modal
+                        qs('#modal-idconsulta').value = Id_consulta;
+                        qs('#modal-descricao').value = Descricao;
+                        qs('#modal-dataemissao').value = Data_emissao;
+
+                        // ajustar ação do form
+                        form.action = '/receitass/editar/' + encodeURIComponent(id);
+
+                        // mostrar modal (usar flex para centralizar)
+                        modal.style.display = 'flex';
+                        modal.setAttribute('aria-hidden','false');
                     });
                 });
 
-                function closeModal(){ modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
-                cancel.addEventListener('click', closeModal);
+                function closeModal(){
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden','true');
+                }
+
+                cancel.addEventListener('click', function(){ closeModal(); });
                 qs('.modal-overlay').addEventListener('click', closeModal);
                 document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
 
-                qsa('.remove-btn').forEach(function(link){ link.addEventListener('click', function(e){ if(!confirm('Tem certeza que deseja remover esta receita?')) e.preventDefault(); }) });
+                // confirmação de remoção
+                qsa('.remove-btn').forEach(function(link){
+                    link.addEventListener('click', function(e){
+                        var ok = confirm('Tem certeza que deseja remover este médico?');
+                        if(!ok) e.preventDefault();
+                    });
+                });
             })();
         </script>
 </body>
