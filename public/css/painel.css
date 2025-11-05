@@ -3,3 +3,87 @@ body{ font-family: Arial, sans-serif; padding:1rem; background:var(--bg) }
 ul{ list-style:none; padding:0 }
 li{ margin:.5rem 0 }
 a{ color:var(--primary); text-decoration:none }
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --bg: #f4f6fb;
+  --card-bg: #fff;
+  --primary: #0078d7;
+  --primary-dark: #005ea3;
+  --text: #222;
+  --border: #ddd;
+}
+
+/* Corpo principal */
+body {
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  height: 100vh;
+  margin: 0;
+
+  /* Centralização total */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Título */
+h1 {
+  font-size: 2.5rem;
+  color: var(--primary-dark);
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* Lista de links */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Itens e links */
+a {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  border-radius: 10px;
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  min-width: 160px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+a:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 120, 215, 0.2);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  a {
+    width: 100%;
+    max-width: 220px;
+  }
+}
