@@ -3,14 +3,13 @@
    Coloque este arquivo em public/css e sirva os arquivos estáticos pelo Express.
 */
 
-:root{
-  --bg-1: #141E30;
-  --bg-2: #243B55;
-  --card-bg: rgba(255,255,255,0.04);
-  --accent: #6C63FF;
-  --accent-2: #3AB0FF;
-  --text: #E6EEF5;
-  --muted: #b7c2ce;
+:root {
+  --bg: #f4f6fb;
+  --card-bg: #fff;
+  --primary: #0078d7;
+  --primary-dark: #005ea3;
+  --text: #222;
+  --border: #ddd;
 }
 
 *{box-sizing: border-box}
@@ -19,7 +18,7 @@ html,body{height:100%;}
 body{
   margin:0;
   font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  background: var(--bg);
   color:var(--text);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -31,7 +30,7 @@ body{
 
 .main{
   width:100%;
-  max-width:420px;
+  max-width:490px;
 }
 
 .box{
@@ -66,7 +65,7 @@ h1{
   margin:0 0 18px 0;
   font-size:22px;
   letter-spacing:0.2px;
-  color:var(--text);
+  color:var(--primary-dark);
 }
 
 form{
@@ -80,15 +79,14 @@ input[type="text"], input[type="password"]{
   width:100%;
   padding:12px 14px;
   border-radius:10px;
-  border:1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.02);
+  border:2px solid var(--primary);
   color:var(--text);
   outline:none;
   font-size:14px;
   transition: box-shadow .18s ease, border-color .12s ease, transform .12s ease;
 }
 
-input::placeholder{color:var(--muted)}
+input::placeholder{color:var(--primary-dark)}
 
 input:focus{
   border-color: rgba(108,99,255,0.9);
@@ -100,18 +98,21 @@ button[type="submit"]{
   margin-top:6px;
   padding:12px 14px;
   border-radius:10px;
-  border:0;
+  border: 2px solid var(--primary);
   cursor:pointer;
-  color:white;
+  color:var(--primary-dark);
   font-weight:600;
   background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
   box-shadow: 0 8px 20px rgba(58,176,255,0.12);
   transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+
 }
 
 button[type="submit"]:hover{
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(58,176,255,0.12);
+  background-color: var(--primary);
+  color: white;
 }
 
 button[type="submit"]:active{
