@@ -35,3 +35,12 @@ a[href="/painel"]{
     text-decoration: none;
     font-weight: 600;
 }
+
+/* Modal */
+.modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1200; }
+.modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+.modal-box { position: relative; background: var(--panel); padding: 1.25rem; border-radius: 8px; box-shadow: 0 10px 40px rgba(2,6,23,0.2); width: 100%; max-width: 520px; z-index: 2; }
+.modal-box h2 { margin-top: 0; }
+.modal-box label { display: block; margin: 0.5rem 0; font-size: 0.95rem; }
+.modal-box input { width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid #e6e9ee; box-sizing: border-box; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
