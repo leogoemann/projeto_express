@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/index.css">
-    <title>Document</title>
+    <title>Login - Sistema de Clínica</title>
 </head>
 <body>
     <section class="main">
         <div class="box">
             <h1>Log in</h1>
-            <form action="/painel">
-                <input type="text" placeholder="Seu email">
-                <input type="password" placeholder="Sua senha">
+            <form action="/auth/login" method="POST">
+                <input type="email" name="mail" placeholder="Seu email" required>
+                <input type="password" name="password" placeholder="Sua senha" required>
                 <button type="submit">Log in</button>
             </form>
         </div>
