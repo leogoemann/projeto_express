@@ -41,7 +41,6 @@
         <% }) %>
     </table>
     
-        <!-- Modal de edição (mesmo comportamento do pacientes) -->
         <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
             <div class="modal-overlay"></div>
             <div class="modal-box">
@@ -90,17 +89,14 @@
                         var telefone = btn.dataset.telefone || '';
                         var email = btn.dataset.email || '';
 
-                        // preencher o formulário do modal
                         qs('#modal-nome').value = nome;
                         qs('#modal-crm').value = crm;
                         qs('#modal-especialidade').value = especialidade;
                         qs('#modal-telefone').value = telefone;
                         qs('#modal-email').value = email;
 
-                        // ajustar ação do form
                         form.action = '/medicos/editar/' + encodeURIComponent(id);
 
-                        // mostrar modal (usar flex para centralizar)
                         modal.style.display = 'flex';
                         modal.setAttribute('aria-hidden','false');
                     });
@@ -115,7 +111,6 @@
                 qs('.modal-overlay').addEventListener('click', closeModal);
                 document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
 
-                // confirmação de remoção
                 qsa('.remove-btn').forEach(function(link){
                     link.addEventListener('click', function(e){
                         var ok = confirm('Tem certeza que deseja remover este médico?');

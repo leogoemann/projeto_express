@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// Listar receitas
 router.get('/', (req, res) => {
   const query = `
     SELECT 
@@ -30,9 +29,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Formulário de nova receita
 router.get('/novo', (req, res) => {
-  // Buscar consultas disponíveis com informações do paciente e médico
   const query = `
     SELECT 
       c.id,
@@ -55,7 +52,6 @@ router.get('/novo', (req, res) => {
   });
 });
 
-// Adicionar receita
 router.post('/novo', (req, res) => {
   const { consulta_id, descricao, data_emissao } = req.body;
   db.query('INSERT INTO receitas (consulta_id, descricao, data_emissao) VALUES (?, ?, ?)',
@@ -66,7 +62,6 @@ router.post('/novo', (req, res) => {
     });
 });
 
-// Editar receita
 router.post('/editar/:id', (req, res) => {
   const { consulta_id, descricao, data_emissao } = req.body;
   db.query('UPDATE receitas SET consulta_id=?, descricao=?, data_emissao=? WHERE id=?',
@@ -77,7 +72,6 @@ router.post('/editar/:id', (req, res) => {
     });
 });
 
-// Remover receita
 router.get('/remover/:id', (req, res) => {
   db.query('DELETE FROM receitas WHERE id = ?', [req.params.id], (err) => {
     if (err) throw err;

@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: 'root',
+  user: 'leoapp',
+  password: 'leo@5155',
   database: 'clinica'
 });
 
@@ -17,7 +17,6 @@ connection.connect((err) => {
   }
   console.log('✓ Conectado ao MySQL!\n');
 
-  // Dropar tabelas se existirem (na ordem correta devido às foreign keys)
   const dropTables = [
     'DROP TABLE IF EXISTS receitas',
     'DROP TABLE IF EXISTS consultas',
@@ -48,7 +47,6 @@ connection.connect((err) => {
 function createTables() {
   console.log('🔄 Criando tabelas...\n');
 
-  // Criar tabela de pacientes
   const createPacientes = `
     CREATE TABLE pacientes (
       Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -69,7 +67,6 @@ function createTables() {
     }
     console.log('✓ Tabela pacientes criada');
 
-    // Criar tabela de médicos
     const createMedicos = `
       CREATE TABLE medicos (
         Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -89,7 +86,6 @@ function createTables() {
       }
       console.log('✓ Tabela medicos criada');
 
-      // Criar tabela de consultas
       const createConsultas = `
         CREATE TABLE consultas (
           Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -110,7 +106,6 @@ function createTables() {
         }
         console.log('✓ Tabela consultas criada');
 
-        // Criar tabela de receitas
         const createReceitas = `
           CREATE TABLE receitas (
             Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +124,6 @@ function createTables() {
           }
           console.log('✓ Tabela receitas criada');
 
-          // Criar tabela de usuários
           const createUsuarios = `
             CREATE TABLE usuarios (
               id INT AUTO_INCREMENT PRIMARY KEY,
@@ -148,7 +142,6 @@ function createTables() {
             }
             console.log('✓ Tabela usuarios criada\n');
 
-            // Criar usuário admin
             criarUsuarioAdmin();
           });
         });

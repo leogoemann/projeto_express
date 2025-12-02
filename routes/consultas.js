@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// Listar consultas
 router.get('/', (req, res) => {
   const query = `
     SELECT 
@@ -30,9 +29,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Formulário de nova consulta
 router.get('/novo', (req, res) => {
-  // Buscar lista de pacientes e médicos
   const queries = [
     'SELECT id, nome FROM pacientes ORDER BY nome',
     'SELECT id, nome FROM medicos ORDER BY nome'
@@ -57,11 +54,9 @@ router.get('/novo', (req, res) => {
   });
 });
 
-// Adicionar consulta
 router.post('/novo', (req, res) => {
   const { paciente_id, medico_id, data_consulta, observacoes, status } = req.body;
   
-  // Validar campos obrigatórios
   if (!paciente_id || !medico_id || !data_consulta) {
     console.error('Campos obrigatórios faltando');
     res.status(400).send('Por favor, preencha todos os campos obrigatórios');
@@ -87,7 +82,6 @@ router.post('/novo', (req, res) => {
   });
 });
 
-// Editar consulta
 router.get('/editar/:id', (req, res) => {
   db.query('SELECT * FROM consultas WHERE id = ?', [req.params.id], (err, results) => {
     if (err) throw err;
@@ -105,7 +99,6 @@ router.post('/editar/:id', (req, res) => {
     });
 });
 
-// Remover consulta
 router.get('/remover/:id', (req, res) => {
   db.query('DELETE FROM consultas WHERE id = ?', [req.params.id], (err) => {
     if (err) throw err;

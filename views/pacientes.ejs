@@ -48,7 +48,6 @@
 
   </table>
 
-  <!-- Modal de edição -->
   <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
     <div class="modal-overlay"></div>
     <div class="modal-box">
@@ -97,10 +96,8 @@
           var telefone = btn.dataset.telefone || '';
           var email = btn.dataset.email || '';
 
-          // preencher o formulário do modal
           qs('#modal-nome').value = nome;
           qs('#modal-cpf').value = cpf;
-          // normalizar data para YYYY-MM-DD se possível
           if (data_nascimento) {
             try {
               var d = new Date(data_nascimento);
@@ -111,10 +108,8 @@
           qs('#modal-telefone').value = telefone;
           qs('#modal-email').value = email;
 
-          // ajustar ação do form
           form.action = '/pacientes/editar/' + encodeURIComponent(id);
 
-          // mostrar modal (usar flex para centralizar)
           modal.style.display = 'flex';
           modal.setAttribute('aria-hidden','false');
         });

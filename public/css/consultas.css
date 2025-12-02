@@ -36,7 +36,6 @@ a[href="/painel"]{
     font-weight: 600;
 }
 
-/* Modal */
 .modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1200; }
 .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
 .modal-box { position: relative; background: var(--panel); padding: 1.25rem; border-radius: 8px; box-shadow: 0 10px 40px rgba(2,6,23,0.2); width: 100%; max-width: 520px; z-index: 2; }

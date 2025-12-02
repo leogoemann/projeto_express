@@ -56,7 +56,6 @@
     </tbody>
   </table>
 
-  <!-- Modal de edição -->
   <div id="editModal" class="modal" aria-hidden="true" style="display:none;">
     <div class="modal-overlay"></div>
     <div class="modal-box">
@@ -97,16 +96,13 @@
 
   <script>
     (function() {
-      // Funções auxiliares
       function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
       function qsa(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
 
-      // Elementos do modal
       const modal = qs('#editModal');
       const form = qs('#editForm');
       const cancel = qs('#modal-cancel');
 
-      // Manipulação do modal
       function closeModal() {
         modal.style.display = 'none';
         modal.setAttribute('aria-hidden', 'true');
@@ -117,12 +113,10 @@
         modal.setAttribute('aria-hidden', 'false');
       }
 
-      // Event listeners para botões de edição
       qsa('.edit-btn').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
           e.preventDefault();
           
-          // Extrair dados do botão
           const id = btn.dataset.id;
           const pacienteId = btn.dataset.pacienteId;
           const medicoId = btn.dataset.medicoId;
@@ -130,11 +124,9 @@
           const observacoes = btn.dataset.observacoes;
           const status = btn.dataset.status;
 
-          // Preencher formulário
           qs('#modal-paciente-id').value = pacienteId || '';
           qs('#modal-medico-id').value = medicoId || '';
           
-          // Formatar data
           if (dataConsulta) {
             try {
               qs('#modal-data-consulta').value = dataConsulta.slice(0, 16);
@@ -146,15 +138,12 @@
           qs('#modal-observacoes').value = observacoes || '';
           qs('#modal-status').value = status || '';
 
-          // Configurar formulário
           form.action = '/consultas/editar/' + encodeURIComponent(id);
 
-          // Abrir modal
           openModal();
         });
       });
 
-      // Event listeners para fechar o modal
       cancel.addEventListener('click', closeModal);
       qs('.modal-overlay').addEventListener('click', closeModal);
       document.addEventListener('keydown', function(e) {
@@ -166,7 +155,6 @@
     <script>
           qs('#modal-Paciente_id').value = Paciente_id;
           qs('#modal-Medico_id').value = Medico_id;
-          // normalizar data consultasara YYYY-MM-DD se consultasossível
           if (Observacoes) {
             try {
               var d = new Date(Observacoes);
@@ -177,10 +165,8 @@
           qs('#modal-Data_consulta').value = Data_consulta;
           qs('#modal-email').value = email;
 
-          // ajustar ação do form
           form.action = '/consultas/editar/' + encodeURIComconsultasonent(id);
 
-          // mostrar modal (usar flex consultasara centralizar)
           modal.style.disconsultaslay = 'flex';
           modal.setAttribute('aria-hidden','false');
 

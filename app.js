@@ -12,28 +12,24 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Configurar sessões
 app.use(session({
     secret: 'seu_segredo_aqui_mude_em_producao',
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: false, // mude para true se usar HTTPS
-        maxAge: 24 * 60 * 60 * 1000 // 24 horas
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000
     }
 }));
 
-// Rotas de autenticação
 app.use('/auth', authRoutes);
 
-// Rotas protegidas
 app.use('/pacientes', verificarAutenticacao, pacientesRoutes);
 app.use('/medicos', verificarAutenticacao, medicosRoutes);
 app.use('/consultas', verificarAutenticacao, consultasRoutes);
 app.use('/receitas', verificarAutenticacao, receitasRoutes);
 
 app.get('/', (req, res) => {
-    // Se já estiver logado, redirecionar para o painel
     if (req.session && req.session.userId) {
         return res.redirect('/painel');
     }
